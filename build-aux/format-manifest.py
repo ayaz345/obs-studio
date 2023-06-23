@@ -23,7 +23,7 @@ def main():
             if file == MAIN_MANIFEST_FILENAME:
                 # Sort module files order in the manifest
                 # Assumption: All modules except the last are strings
-                file_modules = j["modules"][0:-1]
+                file_modules = j["modules"][:-1]
                 last_module = j["modules"][-1]
                 file_modules.sort(key=lambda file_name: file_name)
                 j["modules"] = file_modules

@@ -47,7 +47,7 @@ def read_appcast(url):
 
 
 def get_appcast_url(artifact_dir):
-    dmgs = glob.glob(artifact_dir + "/*.dmg")
+    dmgs = glob.glob(f"{artifact_dir}/*.dmg")
     if not dmgs:
         raise ValueError("No artifacts!")
     elif len(dmgs) > 1:
@@ -76,8 +76,7 @@ def get_appcast_url(artifact_dir):
         break
 
     url = None
-    plist_files = glob.glob(mountpoint + "/*.app/Contents/Info.plist")
-    if plist_files:
+    if plist_files := glob.glob(f"{mountpoint}/*.app/Contents/Info.plist"):
         plist_file = plist_files[0]
         print(f"Reading plist {plist_file} ...")
         plist = plistlib.load(open(plist_file, "rb"))
@@ -118,8 +117,7 @@ if __name__ == "__main__":
 
     target_branch = args.branch
     max_old_vers = args.max_old_ver
-    url = get_appcast_url(args.artifacts)
-    if not url:
+    if url := get_appcast_url(args.artifacts):
+        read_appcast(url)
+    else:
         raise ValueError("Failed to get Sparkle URL from DMG!")
-
-    read_appcast(url)
